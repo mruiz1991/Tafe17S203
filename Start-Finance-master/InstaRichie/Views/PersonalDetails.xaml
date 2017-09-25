@@ -101,6 +101,7 @@
             <!--  secondary commands  -->
             <controls:PageHeader.PrimaryCommands>
                 <AppBarButton Icon="Add" Label="Add Personal Info" Click="AddData" />
+                <AppBarButton Icon="Edit" Label="Edit Personal Info" Click="EditData" />
                 <AppBarButton Icon="Delete" Label="Delete Personal Info" Click="DeleteAccout_Click" />
             </controls:PageHeader.PrimaryCommands>
 
@@ -130,7 +131,7 @@
                     </StackPanel>
                     <ListView x:Name="PersonalInfoListView" Grid.Row="1" HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
-                                ItemTemplate="{StaticResource PersonalInfoListDatavalue}" Height="120">
+                                ItemTemplate="{StaticResource PersonalInfoListDatavalue}" Margin="0,223,0,-741">
                         <RelativePanel.Below>pageStart</RelativePanel.Below>
                     </ListView>
                 </Grid>
