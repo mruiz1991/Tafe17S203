@@ -54,19 +54,20 @@ namespace StartFinance.Views
         {
             try
             {
-                if (_Shoppingname.Text.ToString() == "")
+                if (_NameOfItem.Text.ToString() == "")
                 {
-                    MessageDialog dialog = new MessageDialog("You didn't enter a value idiot!", "Oops..!");
+                    MessageDialog dialog = new MessageDialog("You didn't enter an item name idiot!", "Oops..!");
                     await dialog.ShowAsync();
                 }
                 else
                 {
-                    double TempMoney = Convert.ToDouble(MoneyIn.Text);
+                    double TempPriceQuoted = Convert.ToDouble(_PriceQuoted.Text);
                     conn.CreateTable<ShoppingList>();
                     conn.Insert(new ShoppingList
                     {
-                        ShoppingName = _Shoppingname.Text.ToString(),
-                        Money = TempMoney
+                        NameOfItem = _NameOfItem.Text.ToString(),
+                        PriceQuoted = TempPriceQuoted,
+                        ShoppingDate = _ShoppingDate.Text.ToString()
                     });
                     // Creating table
                     Results();
@@ -81,7 +82,9 @@ namespace StartFinance.Views
                 }
                 else if (ex is SQLiteException)
                 {
-                    MessageDialog dialog = new MessageDialog("YOU IDIOT!!!! That Shopping list item name already exist, Try Different Name. I'd suggest: 'moron'", "Oops..!");
+                    //MessageDialog dialog = new MessageDialog("That Shopping list item name already exist, Try Different Name.", "Oops..!");
+                    MessageDialog dialog = new MessageDialog(ex.Message, "Oops..!");
+
                     await dialog.ShowAsync();
                 }
                 else
@@ -95,30 +98,109 @@ namespace StartFinance.Views
         {
             try
             {
-                string AccSelection = ((ShoppingList)ShoppingListView.SelectedItem).ShoppingName;
+                string AccSelection = ((ShoppingList)ShoppingListView.SelectedItem).NameOfItem;
                 if (AccSelection == "")
                 {
-                    MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
+                    MessageDialog dialog = new MessageDialog("You have not selected the Item", "Oops..!");
                     await dialog.ShowAsync();
                 }
                 else
                 {
                     conn.CreateTable<ShoppingList>();
                     var query1 = conn.Table<ShoppingList>();
-                    var query3 = conn.Query<ShoppingList>("DELETE FROM ShoppingList WHERE ShoppingName ='" + AccSelection + "'");
+                    var query3 = conn.Query<ShoppingList>("DELETE FROM ShoppingList WHERE NameOfItem ='" + AccSelection + "'");
                     ShoppingListView.ItemsSource = query1.ToList();
                 }
             }
             catch (NullReferenceException)
             {
-                MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
+                MessageDialog dialog = new MessageDialog("You have not selected the Item", "Null Reference Exception!");
                 await dialog.ShowAsync();
             }
         }
+
+        private async void EditItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageDialog ShowConf = new MessageDialog("Are you sure you want to update?", "Useless annoying dialog box");
+            ShowConf.Commands.Add(new UICommand("Yes, Of course I want to update!!!")
+            {
+                Id = 0
+            });
+            ShowConf.Commands.Add(new UICommand("No Way, CANCEL!")
+            {
+                Id = 1
+            });
+            ShowConf.DefaultCommandIndex = 0;
+            ShowConf.CancelCommandIndex = 1;
+
+            var result = await ShowConf.ShowAsync();
+            if ((int)result.Id == 0)
+            {
+                // checks if data is null else inserts
+                try
+                {
+
+                    int ShoppingItemID = ((Models.ShoppingList)ShoppingListView.SelectedItem).ID;
+                    string NameOfItem = _NameOfItem.Text;
+                    double PriceQuoted = double.Parse(_PriceQuoted.Text);
+                    string ShoppingDate = _ShoppingDate.Text;
+
+
+                    if (NameOfItem == "")
+                    {
+                        MessageDialog dialog = new MessageDialog("Not selected the Item", "Oops..!");
+                        await dialog.ShowAsync();
+                    }
+                    else
+                    {
+                        conn.CreateTable<Models.ShoppingList>();
+                        var query1 = conn.Table<Models.ShoppingList>();
+                        var query3 = conn.Query<Models.ShoppingList>("update ShoppingList set NameOfItem ='" + NameOfItem + "', PriceQuoted = '" + PriceQuoted + "', ShoppingDate ='" + ShoppingDate + "' where ID = '" + ShoppingItemID + "'");
+                        //var query3 = conn.Query<Models.ContactDetails>("UPDATE ContactDetails SET FirstName ='" + ContactFirstName + "', LastName ='" + ContactLastName + "', Phone ='" + ContactPhone + "' WHERE ID = '" + ContactID + "'");
+                        ShoppingListView.ItemsSource = query1.ToList();
+                    }
+                }
+                catch (NullReferenceException)
+                {
+                    MessageDialog ClearDialog = new MessageDialog("Please select the item to Update", "Oops..! Null Reference Exception");
+                    await ClearDialog.ShowAsync();
+                }
+                catch (FormatException)
+                {
+                    MessageDialog ClearDialog = new MessageDialog("Write your updated item in the correct format!!!", "Oops..! Format Exception");
+                    await ClearDialog.ShowAsync();
+                }
+            }
+            else
+            {
+                //
+            }
+        
+    }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             Results();
         }
+
+        private void ShoppingListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                _ShoppingItemID.Text = ((Models.ShoppingList)ShoppingListView.SelectedItem).ID.ToString();
+                _NameOfItem.Text = ((Models.ShoppingList)ShoppingListView.SelectedItem).NameOfItem;
+                _PriceQuoted.Text = ((Models.ShoppingList)ShoppingListView.SelectedItem).PriceQuoted.ToString();
+                _ShoppingDate.Text = ((Models.ShoppingList)ShoppingListView.SelectedItem).ShoppingDate.ToString();
+        }
+            catch (NullReferenceException)
+            {
+                //Reset text fields when no item is selected
+                _ShoppingItemID.Text = "";
+                _NameOfItem.Text = "";
+                _PriceQuoted.Text = "";
+                _ShoppingDate.Text = "";
+            }
+}
+
     }
 }

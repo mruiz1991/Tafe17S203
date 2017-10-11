@@ -14,10 +14,12 @@ namespace StartFinance.Models
         public int ID { get; set; }
 
         [Unique]
-        public string ShoppingName { get; set; }
+        public string NameOfItem { get; set; }
 
         [NotNull]
-        public double Money { get; set; }
+        public double PriceQuoted { get; set; }
 
+        [NotNull]
+        public string ShoppingDate { get; set; }
     }
 }

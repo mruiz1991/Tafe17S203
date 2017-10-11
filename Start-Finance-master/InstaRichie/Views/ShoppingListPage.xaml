@@ -1,6 +1,4 @@
-﻿
-
-<Page
+﻿<Page
     x:Class="StartFinance.Views.ShoppingListPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -22,10 +20,17 @@
         <DataTemplate x:Key="ShoppingListDataViews">
             <Grid>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding ShoppingName}" Padding="0,0,15,0"/>
-                    <TextBlock Text="{Binding Money}"/>
+                    <TextBlock Text="ID:" Padding="0,0,5,0"/>
+                    <TextBlock Text="{Binding ID}" Padding="0,0,15,0"/>
+                    <TextBlock Text="Name Of Item:" Padding="0,0,5,0"/>
+                    <TextBlock Text="{Binding NameOfItem}" Padding="0,0,15,0"/>
+                    <TextBlock Text="Price Quoted:  $"/>
+                    <TextBlock Text="{Binding PriceQuoted}" Padding="0,0,15,0"/>
+                    <TextBlock Text="Shopping Date: " Padding="0,0,5,0"/>
+                    <TextBlock Text="{Binding ShoppingDate}"/>
                 </StackPanel>
             </Grid>
+
         </DataTemplate>
     </Page.Resources>
 
@@ -85,6 +90,7 @@
             <!--primary commands-->
             <controls:PageHeader.PrimaryCommands>
                 <AppBarButton Icon="Add" Label="Add ShoppingList" Click="AddShopping_Click"/>
+                <AppBarButton Icon="Edit" Label="Edit ShoppingList" Click="EditItem_Click"/>
                 <AppBarButton Icon="Delete" Label="Delete ShoppingList" Click="DeleteItem_Click"/>
             </controls:PageHeader.PrimaryCommands>
         </controls:PageHeader>
@@ -93,22 +99,24 @@
         <Pivot>
             <RelativePanel.Below>pageHeader</RelativePanel.Below>
             <RelativePanel.Above>pageFooter</RelativePanel.Above>
-            <PivotItem Header="Add ShoppingList">
+            <PivotItem Header="Add ShoppingList Item">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="150"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="263"/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0"
                             Orientation="Vertical" VerticalAlignment="Stretch"
                             HorizontalAlignment="Stretch">
-                        <TextBox x:Name="_Shoppingname" PlaceholderText="Lumia Phone" Header="Description"/>
-                        <TextBox x:Name="MoneyIn" Header="Amount" PlaceholderText="1000.00" TextWrapping="Wrap" InputScope="Number"/>
+                        <TextBox x:Name="_ShoppingItemID" Header="Shopping Item ID" PlaceholderText="(Auto-Generated ID)" IsEnabled="False"/>
+                        <TextBox x:Name="_NameOfItem" PlaceholderText="example name" Header="Name Of Item"/>
+                        <TextBox x:Name="_PriceQuoted" Header="Price Quoted" PlaceholderText="1599.95" TextWrapping="Wrap" InputScope="Number"/>
+                        <TextBox x:Name="_ShoppingDate" Header="Shopping Date" PlaceholderText="12/31/1959"/>
                     </StackPanel>
                     <ListView x:Name="ShoppingListView" Grid.Row="1"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch"
-                              ItemTemplate="{StaticResource ShoppingListDataViews}">
+                              ItemTemplate="{StaticResource ShoppingListDataViews}" Margin="0,10,0,0" SelectionChanged="ShoppingListView_SelectionChanged">
                         <RelativePanel.Below>pageStart</RelativePanel.Below>
                     </ListView>
                 </Grid>
