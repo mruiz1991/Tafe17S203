@@ -1,0 +1,121 @@
+﻿<Page
+    x:Class="StartFinance.Views.AppointmentsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Behaviors="using:Template10.Behaviors"
+      xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+      xmlns:Interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:controls="using:Template10.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="using:StartFinance.Views"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      Loaded="Page_Loaded"
+      xmlns:vm="using:StartFinance.ViewModels" mc:Ignorable="d">
+
+    <Page.Resources>
+        <DataTemplate x:Key="AppointmentsDataValue">
+            <Grid>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding AptDescription}" Padding="0,0,15,0"/>
+                    <TextBlock Text="{Binding AptDate}" Padding="0,0,15,0"/>
+                    <TextBlock Text="{Binding AptStartTime}" Padding="0,0,15,0"/>
+                    <TextBlock Text="{Binding AptEndTime}" Padding="0,0,15,0"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Page.DataContext>
+        <vm:MainPageViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveVisualStateGroup">
+                <VisualState x:Name="VisualStateNarrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NarrowMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for narrow view  -->
+                        <!--<Setter Target="AccDataGrid.(RelativePanel.Below)" Value="pageStart" />-->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateNormal">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource NormalMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for normal view  -->
+                        <!--<Setter Target="AccDataGrid.(RelativePanel.RightOf)" Value="pageStart" />-->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="VisualStateWide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource WideMinWidth}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--  TODO: change properties for wide view  -->
+                        <!--<Setter Target="AccDataGrid.(RelativePanel.RightOf)" Value="pageStart" />-->
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <controls:PageHeader x:Name="pageHeader" RelativePanel.AlignLeftWithPanel="True"
+			RelativePanel.AlignRightWithPanel="True"
+			RelativePanel.AlignTopWithPanel="True" Text="Edit Appointment">
+
+            <!--  secondary commands  -->
+            <controls:PageHeader.SecondaryCommands>
+                <AppBarButton Click="{x:Bind ViewModel.GotoSettings}" Label="Settings" />
+                <AppBarButton Click="{x:Bind ViewModel.GotoPrivacy}" Label="Privacy" />
+                <AppBarButton Click="{x:Bind ViewModel.GotoAbout}" Label="About" />
+            </controls:PageHeader.SecondaryCommands>
+
+        </controls:PageHeader>
+
+        <controls:PageHeader x:Name="pageFooter" RelativePanel.AlignLeftWithPanel="True"
+			RelativePanel.AlignRightWithPanel="True"
+			RelativePanel.AlignBottomWithPanel="True">
+
+            <!--  secondary commands  -->
+            <controls:PageHeader.PrimaryCommands>
+                <AppBarButton Icon="Add" Label="Add Appointment" Click="AddAppointment"/>
+                <AppBarButton Icon="Edit" Label="Update Appointment" Click="UpdateAppointment" />
+                <AppBarButton Icon="Delete" Label="Delete Appointment" Click="DeleteAppointment" />
+            </controls:PageHeader.PrimaryCommands>
+
+        </controls:PageHeader>
+
+        <!--  page content  -->
+        <Pivot>
+            <RelativePanel.Below>pageHeader</RelativePanel.Below>
+            <RelativePanel.Above>pageFooter</RelativePanel.Above>
+            <PivotItem Header="Appointment Details">
+                <Grid HorizontalAlignment="Left" Width="336">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="247"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <StackPanel x:Name="pageStart" Grid.Row="0" VerticalAlignment="Top"
+                                HorizontalAlignment="Stretch"
+                                Orientation="Vertical" Margin="10,0,10,0" Height="240">
+                        <TextBox x:Name="AptDescriptionText" Text="" PlaceholderText="eg. Meeting with John" Header="Appointment Description"/>
+                        <TextBox x:Name="AptDateText" Text="" Header="Appointment Date" />
+                        <TextBox x:Name="AptStartTimeText" Text="" PlaceholderText="eg. 900" TextWrapping="Wrap" InputScope="Number" Header="Start Time"/>
+                        <TextBox x:Name="AptEndTimeText" Text="" PlaceholderText="eg. 1530" TextWrapping="Wrap" InputScope="Number" Header="Ending Time"/>
+                    </StackPanel>
+                    <ListView x:Name="AppointmentListView" Grid.Row="1" HorizontalAlignment="Stretch"
+                                ItemTemplate="{StaticResource AppointmentsDataValue}" Margin="0,10,0,0">
+                        <RelativePanel.Below>pageStart</RelativePanel.Below>
+                    </ListView>
+                </Grid>
+            </PivotItem>
+        </Pivot>
+
+
+    </RelativePanel>
+</Page>
+
+
