@@ -198,9 +198,9 @@
                     <StackPanel Orientation="Vertical" Margin="0,15,0,0">
                         <RelativePanel.AlignLeftWithPanel>True</RelativePanel.AlignLeftWithPanel>
                         <RelativePanel.Below>CreditsInfo</RelativePanel.Below>
-                        <TextBlock Text="Disclaimer :" FontSize="25"/>
+                        <TextBlock Text="Team Members :" FontSize="25"/>
                         <TextBlock Style="{ThemeResource BaseTextBlockStyle}">
-                            <Run Text="Credit Ratings are for informative purposes only and are calculated depending on various factors such as Debt, Assets and Account. Please rely on professional services."/>
+                            <Run Text="Team members: Marty, Berat, Anno, Sam"/>
                         </TextBlock>
                     </StackPanel>
                 </RelativePanel>
