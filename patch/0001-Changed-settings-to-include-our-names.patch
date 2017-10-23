@@ -1,0 +1,28 @@
+From a167d30225dcc4cde3efd5219a3bcafbbe1c7c9d Mon Sep 17 00:00:00 2001
+From: Martin Ruiz <martin.ruiz2@student.tafesa.edu.au>
+Date: Mon, 16 Oct 2017 15:57:39 +1030
+Subject: [PATCH] Changed settings to include our names
+
+---
+ Start-Finance-master/InstaRichie/Views/SettingsPage.xaml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Start-Finance-master/InstaRichie/Views/SettingsPage.xaml b/Start-Finance-master/InstaRichie/Views/SettingsPage.xaml
+index ca8f5bf..f79d0da 100644
+--- a/Start-Finance-master/InstaRichie/Views/SettingsPage.xaml
++++ b/Start-Finance-master/InstaRichie/Views/SettingsPage.xaml
+@@ -198,9 +198,9 @@
+                     <StackPanel Orientation="Vertical" Margin="0,15,0,0">
+                         <RelativePanel.AlignLeftWithPanel>True</RelativePanel.AlignLeftWithPanel>
+                         <RelativePanel.Below>CreditsInfo</RelativePanel.Below>
+-                        <TextBlock Text="Disclaimer :" FontSize="25"/>
++                        <TextBlock Text="Team Members :" FontSize="25"/>
+                         <TextBlock Style="{ThemeResource BaseTextBlockStyle}">
+-                            <Run Text="Credit Ratings are for informative purposes only and are calculated depending on various factors such as Debt, Assets and Account. Please rely on professional services."/>
++                            <Run Text="Team members: Marty, Berat, Anno, Sam"/>
+                         </TextBlock>
+                     </StackPanel>
+                 </RelativePanel>
+-- 
+2.14.1.windows.1
+
